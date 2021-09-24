@@ -8,7 +8,7 @@ func f(w io.writer, nums []int){
 
 // 2번째 방법
 // ...을 써서 lines를 가변인자로 만들어줌 -> 그래도 슬라이스가 됨.
-func WriteTo(w io.writer, lines... string) (n int64, err error){
+func WriteTo(w io.writer, lines ...string) (n int64, err error){
 
 }
 

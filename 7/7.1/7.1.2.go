@@ -5,12 +5,14 @@ package main
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
+	"sync"
 )
 
 var urls = []string{
@@ -98,7 +100,7 @@ func writeZip(outFilename string, filenames []string) error {
 // main의 for 반복문을 이렇게 쓰면 된다.
 // func main() {
 // 	var wg sync.WaitGroup
-// 	wg.Add(len(urls))
+// 	wg.Add(len(urls)) // 몇 개의 고루틴이 생길지 모를 때는 wg.Add(1)을 for문 안에 해준다.
 // 	for _, url := range urls {
 // 		go func(url string) {
 // 			defer wg.Done()
@@ -120,3 +122,56 @@ func writeZip(outFilename string, filenames []string) error {
 // 		log.Fatal(err)
 // 	}
 // }
+
+// **** 공유 메모리와 병렬 최소값 찾기 ****
+// 고루틴들이 파일시스템에 데이터를 저장하면 기다렸다가 파일 시스템에서 파일 목록을 찾은 다음 사용했다.
+// 고루틴은 메모리도 서로 공유하기 때문에, 파일시스템 사용하지 않고 포인터로 값을 바꿔줄 수 있다.
+
+// 일단 병렬화 하지 않고 최소값 찾기
+func Min(a []int) int {
+	if len(a) == 0 {
+		return 0
+	}
+	min := a[0]
+	for _, e := range a[1:] {
+		if min > e {
+			min = e
+		}
+	}
+	return min
+}
+
+func ExampleMin() {
+	fmt.Println(Min([]int{
+		83, 46, 49, 23, 44,
+	}))
+}
+
+// 병렬화 시킨 버전
+func ParallelMin(a []int, n int) int {
+	if len(a) < n {
+		return Min(a)
+	}
+	mins := make([]int, n)
+	size := (len(a) + n - 1) / n
+	var wg sync.WaitGroup
+	for i := 0; i < n; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			begin, end := i*size, (i+1)*size
+			if end > len(a) {
+				end = len(a)
+			}
+			mins[i] = Min(a[begin:end])
+		}(i)
+	}
+	wg.Done()
+	return Min(mins)
+}
+
+func ExampleParallelMin() {
+	fmt.Println(ParallelMin([]int{
+		83, 46, 49, 23, 44,
+	}, 4))
+}
