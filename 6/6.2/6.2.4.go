@@ -108,7 +108,7 @@ var m = NewMemoryDataAccess()
 const pathPrefix = "/api/v1/task/"
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
-	getID := func() (ID, error) {
+	getID := func() (task.ID, error) {
 		id := task.ID(r.URL.Path[len(pathPrefix):])
 		if id == "" {
 			return id, errors.New("apiHandler: ID is empty")
