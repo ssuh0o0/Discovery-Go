@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"gogo/task"
+	"github.com/jaeyeom/gogo/task"
 )
 
 type ID int64
