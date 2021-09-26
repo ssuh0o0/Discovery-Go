@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	"regexp"
-	"strconv"
-	"strings"
 )
 
 func ExampleNewEvaluator() {
@@ -36,24 +33,10 @@ func ExampleNewEvaluator() {
 		"-":   NewStrSet("**", "*", "/", "mod", "+", "-"),
 	})
 
-	in := strings.Join([]string{
-		"다들 그 동안 고생이 많았다.",
-		"첫째는 분당에 있는 { 2 ** 4 * 3 }평 아파트를 가져라.",
-		"둘째는 임야 { 10 ** 5 mod 777 } 평을 가져라.",
-		"막내는 { 711 * 8 / 9 }cc의 경운기를 가져라.",
-	}, "\n")
-
-	// func EvalReplaceAll(in string) string {
-	rx := regexp.MustCompile(`{[^}]+}`)
-	out := rx.ReplaceAllStringFunc(in, func(expr string) string {
-		return strconv.Itoa(eval(strings.Trim(expr, "{ }")))
-	})
-	fmt.Println(out)
-	// }
+	if _, err := fmt.Println(eval("0")); err != nil {
+		fmt.Println(0, err)
+	}
 
 	// Output:
-	// 다들 그 동안 고생이 많았다.
-	// 첫째는 분당에 있는 48평 아파트를 가져라.
-	// 둘째는 임야 544 평을 가져라.
-	// 막내는 632cc의 경운기를 가져라.
+	// 5
 }

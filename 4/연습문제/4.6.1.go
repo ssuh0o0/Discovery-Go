@@ -65,11 +65,8 @@ func Eval(opMap map[string]BinOp, prec PrecMap, expr string) int {
 
 type BinOp func(int, int) int
 
-// string set type
-
 type StrSet map[string]struct{}
 
-//Returns a new StrSet
 func NewStrSet(strs ...string) StrSet {
 	m := StrSet{}
 	for _, str := range strs {
@@ -78,7 +75,7 @@ func NewStrSet(strs ...string) StrSet {
 	return m
 }
 
-// Map keyed by operator to set of higher precedence oprerator ( 우선순위 맵의 자료형 정의 )
+//  우선순위 맵의 자료형 정의
 type PrecMap map[string]StrSet
 
 func NewEvaluator(opMap map[string]BinOp, prec PrecMap) func(expr string) int {
