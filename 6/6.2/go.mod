@@ -1,3 +1,5 @@
-module github.com/jaeyeom/gogo/task
+module goproject/hihi
 
 go 1.17
+
+require github.com/jaeyeom/gogo v0.0.0-20191030060942-595aa3f53722

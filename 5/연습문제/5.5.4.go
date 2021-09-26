@@ -26,23 +26,18 @@ type Task struct {
 }
 
 type Interface interface {
-	Len() int
 	Less(i, j int) bool
 	Swap(i, j int)
 }
 
-type sortPriority int
-
-func (c sortPriority) Len() int {
-	return len(c)
-}
+type sortPriority Task
 
 func (c sortPriority) Less(i, j int) bool {
-	return i < j || i == j && i < j
+	return c.Priority < c[j] || i == j && i < j
 }
 
 func (c sortPriority) Swap(i, j int) {
-	i, j = c[j], c[i]
+	i, j = j, i
 }
 
 func (t Task) String() string {

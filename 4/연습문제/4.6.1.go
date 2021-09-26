@@ -41,7 +41,7 @@ func Eval(opMap map[string]BinOp, prec PrecMap, expr string) int {
 		}
 	}
 
-	for _, token := range strings.Fields(expr) {
+	for _, token := range strings.Split(expr, " ") {
 		if token == "errorCase" {
 			panic("Error occurred")
 		}

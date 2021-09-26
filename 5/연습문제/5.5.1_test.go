@@ -4,8 +4,8 @@ import (
 	"fmt"
 )
 
-func ExampleIncludeSubTasks_String() {
-	fmt.Println(IncludeSubTasks(Task{
+func ExampleIncludeSubTasks_MarkDone() {
+	markTask := Task{
 		Title:    "Laundry",
 		Status:   TODO,
 		Deadline: nil,
@@ -32,12 +32,14 @@ func ExampleIncludeSubTasks_String() {
 			Priority: 2,
 			SubTasks: nil,
 		}},
-	}))
+	}
+	markTask.MarkDone()
+	fmt.Println(IncludeSubTasks(markTask))
 	// Output:
-	// [ ] Laundry <nil>
-	//   [ ] Wash <nil>
+	// [v] Laundry <nil>
+	//   [v] Wash <nil>
 	//     [v] Put <nil>
-	//     [ ] Detergent <nil>
-	//   [ ] Dry <nil>
-	//   [ ] Fold <nil>
+	//     [v] Detergent <nil>
+	//   [v] Dry <nil>
+	//   [v] Fold <nil>
 }

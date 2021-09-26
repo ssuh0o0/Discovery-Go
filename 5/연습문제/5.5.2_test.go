@@ -26,19 +26,31 @@ func (c CaseInsensitive) Swap(i, j int) {
 	c[i], c[j] = c[j], c[i]
 }
 
+func Compare(a, b CaseInsensitive) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
 func TestInsensitive_sort(t *testing.T) {
 	cases := []struct {
 		in   CaseInsensitive
 		want CaseInsensitive
 	}{
-		{{"iPhone", "iPad", "MacBook", "AppStore"}, {"AppStore iPad iPhone MacBook"}},
-		{{"b", "a", "d", "c"}, {"a b c d"}},
+		{[]string{"iPhone", "iPad", "MacBook", "AppStore"}, []string{"AppStore iPad iPhone MacBook"}},
+		{[]string{"b", "a", "d", "c"}, []string{"a b c d"}},
 	}
 
 	for _, c := range cases {
 		got := CaseInsensitive(c.in)
 		sort.Strings(got)
-		if got != c.want {
+		if Compare(got, c.want) {
 			t.Errorf("%s == %s, want %s", c.in, got, c.want)
 		}
 	}

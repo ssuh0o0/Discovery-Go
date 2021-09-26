@@ -46,3 +46,10 @@ func (t IncludeSubTasks) indentedString(prefix string) string {
 func (t IncludeSubTasks) String() string {
 	return t.indentedString("")
 }
+
+func (t *Task) MarkDone() {
+	t.Status = DONE
+	for i := range t.SubTasks {
+		t.SubTasks[i].MarkDone()
+	}
+}
