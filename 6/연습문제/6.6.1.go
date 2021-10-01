@@ -16,6 +16,13 @@ type ResponseError struct {
 	Err error
 }
 
+func check() {
+	if err != nil {
+		log.Println(err)
+		return
+	}
+}
+
 type Response struct {
 	ID    task.ID       `json:"id,omitempty"`
 	Task  task.Task     `json:"task"`
@@ -49,18 +56,13 @@ func apiGetHandler(w http.ResponseWriter, r *http.Request) {
 		Task:  t,
 		Error: ResponseError{err},
 	})
-	if err != nil {
-		log.Println(err)
-	}
+	check()
 }
 
 func apiPutHandler(w http.ResponseWriter, r *http.Request) {
 	id := task.ID(mux.Vars(r)["id"])
 	tasks, err := getTasks(r)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	check()
 	for _, t := range tasks {
 		err = m.Put(id, t)
 		err = json.NewEncoder(w).Encode(Response{
@@ -68,19 +70,13 @@ func apiPutHandler(w http.ResponseWriter, r *http.Request) {
 			Task:  t,
 			Error: ResponseError{err},
 		})
-		if err != nil {
-			log.Println(err)
-			return
-		}
+		check()
 	}
 }
 
 func apiPostHandler(w http.ResponseWriter, r *http.Request) {
 	tasks, err := getTasks(r)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	check()
 	for _, t := range tasks {
 		id, err := m.Post(t)
 		err = json.NewEncoder(w).Encode(Response{
@@ -88,10 +84,7 @@ func apiPostHandler(w http.ResponseWriter, r *http.Request) {
 			Task:  t,
 			Error: ResponseError{err},
 		})
-		if err != nil {
-			log.Println(err)
-			return
-		}
+		check()
 	}
 }
 
@@ -102,8 +95,5 @@ func apiDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		ID:    id,
 		Error: ResponseError{err},
 	})
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	check()
 }
