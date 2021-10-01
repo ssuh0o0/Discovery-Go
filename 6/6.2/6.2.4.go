@@ -10,7 +10,7 @@ import (
 	"github.com/jaeyeom/gogo/task"
 )
 
-type ID int64
+type ID string
 
 type DataAccess interface {
 	Get(id ID) (task.Task, error)
@@ -21,13 +21,13 @@ type DataAccess interface {
 
 type MemoryDataAccess struct {
 	tasks  map[ID]task.Task
-	nextID ID
+	nextID int64
 }
 
 func NewMemoryDataAccess() DataAccess {
 	return &MemoryDataAccess{
 		tasks:  map[ID]task.Task{},
-		nextID: ID(1),
+		nextID: int64(1),
 	}
 }
 
@@ -50,7 +50,7 @@ func (m *MemoryDataAccess) Put(id ID, t task.Task) error {
 }
 
 func (m *MemoryDataAccess) Post(t task.Task) (ID, error) {
-	id := m.nextID
+	id := ID(fmt.Sprint(m.nextID))
 	m.nextID++
 	m.tasks[id] = t
 	return id, nil
