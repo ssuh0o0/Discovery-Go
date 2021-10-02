@@ -16,7 +16,7 @@ type ResponseError struct {
 	Err error
 }
 
-func check() {
+func check(err error) {
 	if err != nil {
 		log.Println(err)
 		return
@@ -56,13 +56,13 @@ func apiGetHandler(w http.ResponseWriter, r *http.Request) {
 		Task:  t,
 		Error: ResponseError{err},
 	})
-	check()
+	check(err)
 }
 
 func apiPutHandler(w http.ResponseWriter, r *http.Request) {
 	id := task.ID(mux.Vars(r)["id"])
 	tasks, err := getTasks(r)
-	check()
+	check(err)
 	for _, t := range tasks {
 		err = m.Put(id, t)
 		err = json.NewEncoder(w).Encode(Response{
@@ -70,13 +70,13 @@ func apiPutHandler(w http.ResponseWriter, r *http.Request) {
 			Task:  t,
 			Error: ResponseError{err},
 		})
-		check()
+		check(err)
 	}
 }
 
 func apiPostHandler(w http.ResponseWriter, r *http.Request) {
 	tasks, err := getTasks(r)
-	check()
+	check(err)
 	for _, t := range tasks {
 		id, err := m.Post(t)
 		err = json.NewEncoder(w).Encode(Response{
@@ -84,7 +84,7 @@ func apiPostHandler(w http.ResponseWriter, r *http.Request) {
 			Task:  t,
 			Error: ResponseError{err},
 		})
-		check()
+		check(err)
 	}
 }
 
@@ -95,5 +95,5 @@ func apiDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		ID:    id,
 		Error: ResponseError{err},
 	})
-	check()
+	check(err)
 }
