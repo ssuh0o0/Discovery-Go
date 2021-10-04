@@ -5,6 +5,11 @@
 
 // go 키워드를 쓰면 고루틴이 됨 -> 현재 흐름과는 상관없는 흐름이 됨.
 // 누가 먼저 수행될지, go루틴은 실행될지 안될지도 모름.
+
+package main
+
+import "fmt"
+
 func main() {
 	go func() {
 		fmt.Println("In goroutine")

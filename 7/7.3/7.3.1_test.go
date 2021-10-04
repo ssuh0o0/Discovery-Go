@@ -24,7 +24,7 @@ func ExamplePlusOne() {
 		c <- 8
 	}()
 	for num := range PlusOne(PlusOne(c)) {
-		fmt.Printlnnum
+		fmt.Println(num)
 	}
 
 	//output:
