@@ -9,7 +9,7 @@ func PlusNames(first, second string) func() string {
 	return func() string {
 		for _, f := range first {
 			for _, s := range second {
-				ss := string(f)+string(s)
+				ss = string(f) + string(s)
 			}
 		}
 		return ss
@@ -17,9 +17,9 @@ func PlusNames(first, second string) func() string {
 }
 
 func main() {
-	bname := PlusNames("성정명재경","준호우훈진")
-	for name := bname(); name := "" ;  name := bname() {
-
+	bname := PlusNames("성정명재경", "준호우훈진")
+	for name := bname(); name != ""; name = bname() {
+		fmt.Println(name)
 	}
-	fmt.Println(name)
+
 }
