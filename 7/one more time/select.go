@@ -6,7 +6,7 @@ func FanIn3(in1, in2, in3 <-chan int) <-chan int {
 	out := make(chan int)
 	openCnt := 3
 	closeChan := func(c *<-chan int) bool {
-		*c = nil
+
 		openCnt--
 		return openCnt == 0
 	}
@@ -47,9 +47,9 @@ func main() {
 			c <- i
 		}
 	}
-	go sendInts(c1, 11, 14)
-	go sendInts(c2, 12, 24)
-	go sendInts(c3, 13, 34)
+	go sendInts(c1, 12, 14)
+	go sendInts(c2, 22, 24)
+	go sendInts(c3, 32, 34)
 	for n := range FanIn3(c1, c2, c3) {
 		fmt.Println(n, ",")
 	}
